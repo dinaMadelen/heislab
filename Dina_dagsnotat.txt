@@ -7,3 +7,33 @@ Satt opp git
 Satt opp doxygen fil
 Marie logga inn
 Lagde ide til UML
+
+UML:
+AVHENGIGHETER:
+
+/bruker er kontrolleren som vi trykker på
+BRUKER:
+    Trenger ingenting - evt se lys
+
+/minne er listen av verdier som bruker har trykket på 
+MINNE:
+    Trenger Brukerinput
+
+/system, funksjon, er logikken som sier om heis skal gå opp ned eller stå stille
+/lys, funksjonalitet, er lysene som skal lyse på kontrolleren
+LYS + SYSTEM:
+    Trenger MINNE
+
+/door, funksjonalitet + variabel, bestemmer om dør er åpen eller lukket
+DOOR: 
+    Trenger WAIT + SYSTEM
+
+
+/move, variabel, true hvis heis går opp
+MOVE:
+    Trenger SYSTEM
+
+/wait, variabel, true hvis heis står stille
+WAIT:
+    Trenger SYSTEM og BRUKER
+
