@@ -5,7 +5,9 @@
 #include "driver/elevio.h"
 
 
-
+/**
+ * Denne koden fungerer slik at hvis heisen ikke er i tredje etage vil den gå nedover 
+*/
 int main(){
     elevio_init();
     

@@ -1,0 +1,72 @@
+Så koden alltid kjører:
+
+while(1)
+DEFINISJONER:
+
+
+VERDIER DEFINISJONER:
+int floor = elevio_floorSensor()
+int wait = false;
+
+
+MINNE FUNKSJON:
+Append array if button press
+delete value if elevator wait at floor
+delete all value if stopbutton
+
+
+
+DØRFUNKSJONALITET:
+Dør er åpen hvis den er på riktig etage og den står stille, hvis døren da blir blokkert venter den
+
+
+If (floor == right floor) and (wait == true){
+    door open
+    if (door_obstruction()){
+        wait
+        }
+}
+
+WAIT OR MOVE, HEISFUNKSJONALITET:
+
+Funksjon for at hvis stoppknappen blir trykket på så stopper heis:
+
+WAIT IF STOPBUTTON
+if (elevio_stopButton(){
+    elevio_motorDirection(DIRN_STOP);
+    wait = true;
+    #NOTE: Hvis heis stopper skal den kunne starte igjen?  
+};
+
+WAIT  IF NO INPUT
+elif(length(knappeliste) < Hvilket tall vi er i listen){
+    elevio_motorDirection(DIRN_STOP);
+    wait = true
+}
+
+elif (noe er i knapppressekø){
+WAIT IF ON FLOOR
+     if(floor = neste etage){
+        elevio_motorDirection(DIRN_STOP);
+        
+
+
+        if (time since stop < 3 sec) or (door_obstruction)
+        wait = true
+
+
+    }
+
+MOVE
+    elif(floor < neste etage){
+        elevio_motorDirection(DIRN_UP);
+        wait = false
+    }
+
+MOVE
+    elif(floor > neste etage){
+       elevio_motorDirection(DIRN_DOWN);
+       wait = false
+    }
+   
+}
