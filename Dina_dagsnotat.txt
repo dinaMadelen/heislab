@@ -1,4 +1,7 @@
 Dag 1
+Testet heis:
+Heisen går initielt bare repeterende opp og ned stanser på grenser
+
 Hater HunchoLanker
 Satt opp git
 Satt opp doxygen fil
