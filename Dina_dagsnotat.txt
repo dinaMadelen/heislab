@@ -1,0 +1,6 @@
+Dag 1
+Hater HunchoLanker
+Satt opp git
+Satt opp doxygen fil
+Marie logga inn
+Lagde ide til UML
