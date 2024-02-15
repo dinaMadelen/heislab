@@ -1,0 +1,41 @@
+#Worknotes
+
+#Generelle notes
+UML: Dokumenteres med UML før implementasjon.
+	UML (unified modeling language) brukes som en visuell representasjon av 
+
+V-Modell:  for å sikre verifikasjon av arbeidskriterier.
+
+FAT : (Factory Acceptance Test )til implementasjonsdel. 
+Uke 11
+
+Git + Doxygen: God dokumentasjon med git og doxygen vil trekke opp.
+
+UML og refleksjonsdel inngår i en rapport vi skal skrive.
+
+Viktige tidspunkter
+FAT Uke 11
+Labrapport fredag 22. Mars
+
+Motorstyring
+Forsynes mellom 0-5V, styrer pådrag
+
+Kan hente ut tacho signal + tacho-signal, trenger ikke ta hensyn til
+
+Notes selve implementasjon.
+4 etg.(knapp) (lys)
+DØR ÅPEN (lys)
+DØR BLOKKERT 
+STOPP (Knapp)
+
+Etasjeindikatorlys
+
+Praktisk info
+Lys må settes eksplisitt (ingen kobling mellom lys og etage initielt)
+
+Endestoppbryte = Aktiver stopp
+
+Rød Blå ledning er strøm til motor
+
+make til kompilering  make ./elevator 
+
