@@ -4,6 +4,10 @@
 #include <time.h>
 #include "driver/elevio.h"
 
+int current_floor = elevio_floorSensor();
+void goToFloor(int floor, int next_floor){
+    if 
+}
 
 /**
  * Denne koden fungerer slik at hvis heisen ikke er i tredje etage vil den gå nedover 
