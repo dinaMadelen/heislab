@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <unistd.h>
 #include <stdlib.h>
 #include <signal.h>
 #include <time.h>
@@ -25,7 +26,11 @@ void goToFloor(int next_floor){
     while (floor < next_floor){
         int current_floor = elevio_floorSensor();
         elevio_motorDirection(DIRN_UP);
-
+        
+        if (current_floor != -1){
+            elevio_floorIndicator(current_floor);
+        }
+        
         if (current_floor == next_floor){
             elevio_motorDirection(DIRN_STOP);
             return;
@@ -39,6 +44,10 @@ void goToFloor(int next_floor){
     while(floor > next_floor){
         int current_floor = elevio_floorSensor();
         elevio_motorDirection(DIRN_DOWN);
+
+        if (current_floor != -1){
+            elevio_floorIndicator(current_floor);
+        }
 
         if (current_floor == next_floor){
             elevio_motorDirection(DIRN_STOP);
@@ -54,14 +63,14 @@ void goToFloor(int next_floor){
 void startupSequence(){
     
     printf("startup initiating");
-    int current_floor = elevio_floorSensor();
+    
 
     while(betweenFloors()){
+        int current_floor = elevio_floorSensor();
         elevio_motorDirection(DIRN_DOWN);
-        if((current_floor == 0) || (current_floor == 1) || (current_floor == 2) || (current_floor == 3)){
-            elevio_motorDirection(DIRN_STOP);
-
-            return;
+        
+        if (current_floor != -1){
+            elevio_floorIndicator(current_floor);
         }
         if(elevio_stopButton()){
             elevio_motorDirection(DIRN_STOP);
@@ -71,7 +80,24 @@ void startupSequence(){
 }
     
 
+void doorOpenSequence(){
+    int between_floors = betweenFloors();
+    if (between_floors){
+        printf("Doors cannot open you are between floors");
+    }else{
+        elevio_doorOpenLamp(1);
+        usleep(3000000);
+        while(elevio_obstruction()){
+            usleep(1000000);
+        }
+        usleep(3000000);
+        elevio_doorOpenLamp(0);
+        }
+}
 
+/*Står stille betyr definert
+
+*/
 /**
  * Denne koden fungerer slik at hvis heisen ikke er i tredje etage vil den gå nedover 
 */
@@ -89,16 +115,20 @@ int main(){
 
         startupSequence();
         int floor = elevio_floorSensor();
-    
+
+        
+
         printf("Startup complete\n");
         
 
         goToFloor(3);
+        doorOpenSequence();
 
         printf("completed floor jump\n");
         
 
         goToFloor(1);
+        doorOpenSequence();
 
         printf("completed floor jump\n");
         
