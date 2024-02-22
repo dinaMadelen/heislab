@@ -4,57 +4,110 @@
 #include <time.h>
 #include "driver/elevio.h"
 
+#define TRUE 1
+#define FALSE 0
 
-void goToFloor(int floor, int next_floor){
-    int current_floor = elevio_floorSensor();
-
-    if (current_floor == next_floor){
-        elevio_motorDirection(DIRN_STOP);
-        return 0;
+int betweenFloors(){
+    int floor = elevio_floorSensor();
+    if(floor == -1){
+        return TRUE;
+    }else{
+        return FALSE;
     }
-    if (floor < next_floor){
+}
+
+/*
+    Floor må alltid være definert fra før av
+*/
+void goToFloor(int next_floor){
+    int floor = elevio_floorSensor();
+    
+    while (floor < next_floor){
+        int current_floor = elevio_floorSensor();
         elevio_motorDirection(DIRN_UP);
 
+        if (current_floor == next_floor){
+            elevio_motorDirection(DIRN_STOP);
+            return;
+        }
+        if(elevio_stopButton()){
+            elevio_motorDirection(DIRN_STOP);
+            break;
+        }
     }
-    if (floor > next_floor){
+
+    while(floor > next_floor){
+        int current_floor = elevio_floorSensor();
         elevio_motorDirection(DIRN_DOWN);
 
+        if (current_floor == next_floor){
+            elevio_motorDirection(DIRN_STOP);
+            return;
+        }
+        if(elevio_stopButton()){
+            elevio_motorDirection(DIRN_STOP);
+            break;
+        }
     }
 }
 
 void startupSequence(){
+    
+    printf("startup initiating");
     int current_floor = elevio_floorSensor();
-    if((current_floor =! 1) && (current_floor =! 2) && (current_floor =! 3) && (current_floor != 4)){
-        elevio_motorDirection(DIRN_DOWN);
-    }
 
-    if((current_floor == 1) && (current_floor == 2) && (current_floor == 3) && (current_floor == 4)){
-        elevio_motorDirection(DIRN_STOP);
-        /** 
-         * Funksjonen får ikke exite koden hvis vi ikke er i en definert tilstand
-        */
-        return 0;
+    while(betweenFloors()){
+        elevio_motorDirection(DIRN_DOWN);
+        if((current_floor == 0) || (current_floor == 1) || (current_floor == 2) || (current_floor == 3)){
+            elevio_motorDirection(DIRN_STOP);
+
+            return;
+        }
+        if(elevio_stopButton()){
+            elevio_motorDirection(DIRN_STOP);
+            break;
+        }
     }
 }
+    
+
 
 /**
  * Denne koden fungerer slik at hvis heisen ikke er i tredje etage vil den gå nedover 
 */
+
 int main(){
     elevio_init();
     
     printf("=== Example Program ===\n");
     printf("Press the stop button on the elevator panel to exit\n");
-
-    elevio_motorDirection(DIRN_UP);
+    int is_between_floors = betweenFloors();
+    printf("Is between floors: %d \n",is_between_floors);
 
     while(1){
-        int floor = elevio_floorSensor();
-
-        
+        printf("Inside the main while loop\n");
 
         startupSequence();
-        goToFloor(floor, 3);
+        int floor = elevio_floorSensor();
+    
+        printf("Startup complete\n");
+        
+
+        goToFloor(3);
+
+        printf("completed floor jump\n");
+        
+
+        goToFloor(1);
+
+        printf("completed floor jump\n");
+        
+
+        goToFloor(3);
+
+        break;
+
+
 
         for(int f = 0; f < N_FLOORS; f++){
             for(int b = 0; b < N_BUTTONS; b++){
