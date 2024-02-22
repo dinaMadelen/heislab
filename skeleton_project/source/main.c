@@ -4,9 +4,37 @@
 #include <time.h>
 #include "driver/elevio.h"
 
-int current_floor = elevio_floorSensor();
+
 void goToFloor(int floor, int next_floor){
-    if 
+    int current_floor = elevio_floorSensor();
+
+    if (current_floor == next_floor){
+        elevio_motorDirection(DIRN_STOP);
+        return 0;
+    }
+    if (floor < next_floor){
+        elevio_motorDirection(DIRN_UP);
+
+    }
+    if (floor > next_floor){
+        elevio_motorDirection(DIRN_DOWN);
+
+    }
+}
+
+void startupSequence(){
+    int current_floor = elevio_floorSensor();
+    if((current_floor =! 1) && (current_floor =! 2) && (current_floor =! 3) && (current_floor != 4)){
+        elevio_motorDirection(DIRN_DOWN);
+    }
+
+    if((current_floor == 1) && (current_floor == 2) && (current_floor == 3) && (current_floor == 4)){
+        elevio_motorDirection(DIRN_STOP);
+        /** 
+         * Funksjonen får ikke exite koden hvis vi ikke er i en definert tilstand
+        */
+        return 0;
+    }
 }
 
 /**
@@ -23,14 +51,10 @@ int main(){
     while(1){
         int floor = elevio_floorSensor();
 
-        if(floor == 0){
-            elevio_motorDirection(DIRN_UP);
-        }
+        
 
-        if(floor == N_FLOORS-1){
-            elevio_motorDirection(DIRN_DOWN);
-        }
-
+        startupSequence();
+        goToFloor(floor, 3);
 
         for(int f = 0; f < N_FLOORS; f++){
             for(int b = 0; b < N_BUTTONS; b++){

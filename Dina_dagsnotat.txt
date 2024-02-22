@@ -9,7 +9,7 @@ Marie logga inn
 Lagde ide til UML
 
 UML:
-AVHENGIGHETER:
+KLASSEDIAGRAM/ AVHENGIGHETER:
 
 /bruker er kontrolleren som vi trykker på
 BRUKER:
