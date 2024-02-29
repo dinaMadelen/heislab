@@ -3,99 +3,20 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <time.h>
-#include "driver/elevio.h"
 
-#define TRUE 1
-#define FALSE 0
+#include "driver/elevio.h"
+#include "manager/linemanager.h"
+#include "manager/elevatormanager.h"
+#include "manager/doormanager.h"
+
+
+
+
+
 int line[4];
 
 
-int betweenFloors(){
-    int floor = elevio_floorSensor();
-    if(floor == -1){
-        return TRUE;
-    }else{
-        return FALSE;
-    }
-}
 
-/*
-    Floor må alltid være definert fra før av
-*/
-void goToFloor(int next_floor){
-    int floor = elevio_floorSensor();
-    
-    while (floor < next_floor){
-        int current_floor = elevio_floorSensor();
-        elevio_motorDirection(DIRN_UP);
-        
-        if (current_floor != -1){
-            elevio_floorIndicator(current_floor);
-        }
-        
-        if (current_floor == next_floor){
-            elevio_motorDirection(DIRN_STOP);
-            return;
-        }
-        if(elevio_stopButton()){
-            elevio_motorDirection(DIRN_STOP);
-            break;
-        }
-    }
-
-    while(floor > next_floor){
-        int current_floor = elevio_floorSensor();
-        elevio_motorDirection(DIRN_DOWN);
-
-        if (current_floor != -1){
-            elevio_floorIndicator(current_floor);
-        }
-
-        if (current_floor == next_floor){
-            elevio_motorDirection(DIRN_STOP);
-            return;
-        }
-        if(elevio_stopButton()){
-            elevio_motorDirection(DIRN_STOP);
-            break;
-        }
-    }
-}
-
-void startupSequence(){
-    
-    printf("startup initiating");
-    
-
-    while(betweenFloors()){
-        int current_floor = elevio_floorSensor();
-        elevio_motorDirection(DIRN_DOWN);
-        
-        if (current_floor != -1){
-            elevio_floorIndicator(current_floor);
-        }
-        if(elevio_stopButton()){
-            elevio_motorDirection(DIRN_STOP);
-            break;
-        }
-    }
-}
-    
-
-void doorOpenSequence(){
-    int between_floors = betweenFloors();
-    if (between_floors){
-        printf("Doors cannot open you are between floors");
-    }else{
-        elevio_doorOpenLamp(1);
-        usleep(3000000);
-        while(elevio_obstruction()){
-            usleep(1000000);
-        }
-        usleep(3000000);
-        elevio_doorOpenLamp(0);
-        }
-}
 
 /*Står stille betyr definert
 

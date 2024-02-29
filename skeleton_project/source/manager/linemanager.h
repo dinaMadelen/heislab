@@ -1,0 +1,3 @@
+void addToLineIfButton();
+void removeFromLine();
+

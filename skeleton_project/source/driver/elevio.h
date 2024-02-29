@@ -1,7 +1,9 @@
 #pragma once
 
-
 #define N_FLOORS 4
+
+#define TRUE 1
+#define FALSE 0
 
 typedef enum { 
     DIRN_DOWN   = -1,
