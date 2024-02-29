@@ -5,6 +5,19 @@
 #include <time.h>
 
 #include "../driver/elevio.h"
+#include "doormanager.h"
+#include "linemanager.h"
+
+int stopbutton(){
+    if(elevio_stopButton()){
+            elevio_motorDirection(DIRN_STOP);
+            printf("Stopbutton pressed");
+            elevio_stopLamp(1);
+            return 1;
+            exit(0);
+        }
+    return 0;
+}
 
 int betweenFloors(){
     int floor = elevio_floorSensor();
@@ -19,10 +32,10 @@ void startupSequence(){
     
     printf("startup initiating");
     
-
     while(betweenFloors()){
         int current_floor = elevio_floorSensor();
         elevio_motorDirection(DIRN_DOWN);
+        addToLineIfButton();
         
         if (current_floor != -1){
             elevio_floorIndicator(current_floor);
@@ -40,6 +53,7 @@ void goToFloor(int next_floor){
     while (floor < next_floor){
         int current_floor = elevio_floorSensor();
         elevio_motorDirection(DIRN_UP);
+        addToLineIfButton();
         
         if (current_floor != -1){
             elevio_floorIndicator(current_floor);
@@ -49,15 +63,16 @@ void goToFloor(int next_floor){
             elevio_motorDirection(DIRN_STOP);
             return;
         }
-        if(elevio_stopButton()){
-            elevio_motorDirection(DIRN_STOP);
-            break;
+        if (elevio_stopButton()){
+            stopbutton();
         }
+        
     }
 
     while(floor > next_floor){
         int current_floor = elevio_floorSensor();
         elevio_motorDirection(DIRN_DOWN);
+        addToLineIfButton();
 
         if (current_floor != -1){
             elevio_floorIndicator(current_floor);
@@ -67,9 +82,8 @@ void goToFloor(int next_floor){
             elevio_motorDirection(DIRN_STOP);
             return;
         }
-        if(elevio_stopButton()){
-            elevio_motorDirection(DIRN_STOP);
-            break;
+        if (elevio_stopButton()){
+            stopbutton();
         }
     }
 }

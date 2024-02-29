@@ -5,18 +5,34 @@
 #include <time.h>
 
 #include "../driver/elevio.h"
+#include "elevatormanager.h"
+#include "linemanager.h"
+
 
 void doorOpenSequence(){
     int between_floors = betweenFloors();
     if (between_floors){
         printf("Doors cannot open you are between floors");
+        stopbutton();
     }else{
         elevio_doorOpenLamp(1);
-        usleep(3000000);
+        removeCurrentFloorFromLine();
+
         while(elevio_obstruction()){
-            usleep(1000000);
+            usleep(1000);
+            addToLineIfButton();
+            if(elevio_stopButton()){
+                stopbutton();
+            }
         }
-        usleep(3000000);
+
+        for(int i = 0; i < 300; i++){
+            usleep(3000);
+            addToLineIfButton();
+            if(elevio_stopButton()){
+                stopbutton();
+            }
+        }
         elevio_doorOpenLamp(0);
         }
 }

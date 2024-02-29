@@ -5,6 +5,10 @@
 #define TRUE 1
 #define FALSE 0
 
+int line[4];
+int floorPriority[4];
+
+
 typedef enum { 
     DIRN_DOWN   = -1,
     DIRN_STOP   = 0,

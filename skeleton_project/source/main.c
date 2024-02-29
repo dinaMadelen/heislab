@@ -11,22 +11,13 @@
 
 
 
-
-
-int line[4];
-
-
-
-
-/*Står stille betyr definert
-
-*/
-/**
- * Denne koden fungerer slik at hvis heisen ikke er i tredje etage vil den gå nedover 
-*/
-
 int main(){
     elevio_init();
+    floorPriority[0] = 0;
+    floorPriority[1] = 0;
+    floorPriority[2] = 0;
+    floorPriority[3] = 0;
+
     
     printf("=== Example Program ===\n");
     printf("Press the stop button on the elevator panel to exit\n");
@@ -37,49 +28,25 @@ int main(){
         printf("Inside the main while loop\n");
 
         startupSequence();
-        int floor = elevio_floorSensor();
 
-        
-
+    
         printf("Startup complete\n");
-        
-
-        goToFloor(3);
-        doorOpenSequence();
-
-        printf("completed floor jump\n");
-        
-
-        goToFloor(1);
-        doorOpenSequence();
-
-        printf("completed floor jump\n");
-        
-
-        goToFloor(3);
-
-        break;
-
-
-
-        for(int f = 0; f < N_FLOORS; f++){
-            for(int b = 0; b < N_BUTTONS; b++){
-                int btnPressed = elevio_callButton(f, b);
-                elevio_buttonLamp(f, b, btnPressed);
+        while (1){
+            addToLineIfButton();
+            int next_floor = getNextFloor();
+            while (next_floor == -1) {
+                addToLineIfButton();
+                printf("next floor %d", next_floor);
+                next_floor = getNextFloor();
+                stopbutton();
             }
+            /*printf(" %d ", floorPriority[0]," %d ", floorPriority[1], " %d ", floorPriority[2]," %d ", floorPriority[3]);
+            */
+            goToFloor(next_floor);
+            doorOpenSequence();
+            
         }
-
-        if(elevio_obstruction()){
-            elevio_stopLamp(1);
-        } else {
-            elevio_stopLamp(0);
-        }
-        
-        if(elevio_stopButton()){
-            elevio_motorDirection(DIRN_STOP);
-            break;
-        }
-        
+        break;
         nanosleep(&(struct timespec){0, 20*1000*1000}, NULL);
     }
 

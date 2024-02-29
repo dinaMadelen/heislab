@@ -1,3 +1,3 @@
 void addToLineIfButton();
-void removeFromLine();
-
+void removeCurrentFloorFromLine();
+int getNextFloor();
