@@ -7,6 +7,8 @@
 
 #define TRUE 1
 #define FALSE 0
+int line[4];
+
 
 int betweenFloors(){
     int floor = elevio_floorSensor();
