@@ -49,21 +49,29 @@ void startupSequence(){
 
 void goToFloor(int next_floor){
     int floor = elevio_floorSensor();
-    
+    int next_floor = next_floor;
+    int last_floor = 0;
+    int motordirection;
+
     while (floor < next_floor){
         int current_floor = elevio_floorSensor();
+        
         elevio_motorDirection(DIRN_UP);
         addToLineIfButton();
         
         if (current_floor != -1){
             elevio_floorIndicator(current_floor);
+            last_floor = current_floor;
         }
         
         if (current_floor == next_floor){
             elevio_motorDirection(DIRN_STOP);
+            last_floor = current_floor;
             return;
         }
         if (elevio_stopButton()){
+            /*Må legge til stoppsekvens*/
+            motordirection = 1;
             stopbutton();
         }
         
@@ -76,6 +84,7 @@ void goToFloor(int next_floor){
 
         if (current_floor != -1){
             elevio_floorIndicator(current_floor);
+            last_floor = current_floor;
         }
 
         if (current_floor == next_floor){
@@ -83,6 +92,7 @@ void goToFloor(int next_floor){
             return;
         }
         if (elevio_stopButton()){
+            motordirection = 0;
             stopbutton();
         }
     }
