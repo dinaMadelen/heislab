@@ -13,12 +13,7 @@
 
 int main(){
     elevio_init();
-    floorPriority[0] = 0;
-    floorPriority[1] = 0;
-    floorPriority[2] = 0;
-    floorPriority[3] = 0;
 
-    
     printf("=== Example Program ===\n");
     printf("Press the stop button on the elevator panel to exit\n");
     int is_between_floors = betweenFloors();
@@ -38,7 +33,9 @@ int main(){
                 addToLineIfButton();
                 printf("next floor %d", next_floor);
                 next_floor = getNextFloor();
-                stopbutton();
+                if(elevio_stopButton()){
+                    stopbutton();
+                }
             }
             /*printf(" %d ", floorPriority[0]," %d ", floorPriority[1], " %d ", floorPriority[2]," %d ", floorPriority[3]);
             */

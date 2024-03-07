@@ -7,7 +7,10 @@
 
 int line[4];
 int floorPriority[4];
-
+int hallUpLine[4];
+int hallDownLine[4];
+int true_last_floor;
+int motordirection;
 
 typedef enum { 
     DIRN_DOWN   = -1,
