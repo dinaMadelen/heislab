@@ -7,6 +7,14 @@
 #include "../driver/elevio.h"
 #include "doormanager.h"
 #include "linemanager.h"
+int betweenFloors(){
+    int floor = elevio_floorSensor();
+    if(floor == -1){
+        return TRUE;
+    }else{
+        return FALSE;
+    }
+}
 
 int stopbutton(){
         
@@ -45,14 +53,7 @@ int stopbutton(){
     return 0;
 }
 
-int betweenFloors(){
-    int floor = elevio_floorSensor();
-    if(floor == -1){
-        return TRUE;
-    }else{
-        return FALSE;
-    }
-}
+
 
 void startupSequence(){
     

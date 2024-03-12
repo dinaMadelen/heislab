@@ -20,7 +20,7 @@ void doorOpenSequence(){
 
         int i = 0;
 
-        while(i < 10000){
+        while(i < 5000){
             i = i+1;
             usleep(300);
             addToLineIfButton();
